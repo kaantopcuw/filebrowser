@@ -1,0 +1,24 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    user: "0:0"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./.filebrowser.json:/.filebrowser.json
+      - filebrowser_db:/database
+      # Strapi uploads volume - aynı isimli Coolify volume'a bağlanır
+      - strapi-uploads:/srv/strapi-uploads
+      # Strapi db/tmp volume
+      - strapi-db:/srv/strapi-db
+    restart: unless-stopped
+
+volumes:
+  filebrowser_db:
+  strapi-uploads:
+    external: true
+    name: g8wk08ck0gs0cok4sc00k00c-black-strapi-uploads
+  strapi-db:
+    external: true
+    name: g8wk08ck0gs0cok4sc00k00c-black-strapi-db
