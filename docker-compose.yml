@@ -3,24 +3,18 @@ services:
     image: filebrowser/filebrowser:latest
     container_name: filebrowser
     user: "0:0"
-    command: ["--noauth"] # Şifre sormayı iptal eder, direkt içeri girersin
-    ports:
-      - "8080:80" # IP:8080 üzerinden direkt erişim (Yedek kapı)
+    command: ["--noauth"]
+    # ports: kısmını tamamen sildik, port çakışması yaşamayacağız.
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.fb.rule=Host(`kurtarma.socialwitch.com`)"
       - "traefik.http.services.fb.loadbalancer.server.port=80"
     volumes:
-      # - ./.filebrowser.json:/.filebrowser.json # Hostta dosya yoksa container'ı patlatır, yoruma aldık.
-      - filebrowser_db:/database
-      # Strapi uploads volume - aynı isimli Coolify volume'a bağlanır
       - strapi-uploads:/srv/strapi-uploads
-      # Strapi db/tmp volume
       - strapi-db:/srv/strapi-db
     restart: unless-stopped
 
 volumes:
-  filebrowser_db:
   strapi-uploads:
     external: true
     name: g8wk08ck0gs0cok4sc00k00c-black-strapi-uploads
